@@ -10,11 +10,18 @@ import { collapseSidebar } from "../../store/slices/SidebarSlice";
 export default function Sidebar({ children }) {
   // const [expanded, setExpanded] = useState(true)
 
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-const isCollapsed = useSelector((state) => state.sidebar.isCollapsed);
+  const isCollapsed = useSelector((state) => state.sidebar.isCollapsed);
 
- console.log(isCollapsed)
+  console.log(isCollapsed)
+
+  if (isCollapsed == null) {
+
+    return null
+    
+  }
+
   return (
     <aside className="h-screen max-w-0 fixed left-0 top-0">
       <nav className="h-full inline-flex flex-col bg-white border-r shadow-sm">
@@ -22,17 +29,16 @@ const isCollapsed = useSelector((state) => state.sidebar.isCollapsed);
           {/* {console.log(isCollapsed)} */}
           <img
             src="https://img.logoipsum.com/243.svg"
-            className={`overflow-hidden transition-all ${
-              isCollapsed ? "w-32" : "w-0"
-            }`}
+            className={`overflow-hidden transition-all ${isCollapsed ? "w-32" : "w-0"
+              }`}
             alt=""
           />
           <button
-            onClick={() =>{
+            onClick={() => {
               // setExpanded((curr) => !curr)
               dispatch(collapseSidebar())
               // console.log(isCollapsed)
-            } }
+            }}
             className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
           >
             {isCollapsed ? <ChevronFirst /> : <ChevronLast />}
@@ -40,7 +46,7 @@ const isCollapsed = useSelector((state) => state.sidebar.isCollapsed);
         </div>
 
         {/* <SidebarContext.Provider value={{ expanded }}> */}
-          <ul className="flex-1 px-3">{children}</ul>
+        <ul className="flex-1 px-3">{children}</ul>
         {/* </SidebarContext.Provider> */}
 
         <div className="border-t flex p-3">
@@ -77,28 +83,25 @@ export function SidebarItem({ icon, text, active, alert }) {
         relative flex items-center h-12  px-3 my-2
         font-medium rounded-md cursor-pointer
         transition-colors group
-        ${
-          active
-            ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
-            : "hover:bg-indigo-50 text-gray-600"
+        ${active
+          ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+          : "hover:bg-indigo-50 text-gray-600"
         }
     `}
     >
       {icon}
       <span
-        className={`overflow-hidden transition-all ${
-          isCollapsed ? " ml-4" : "w-0"
-        }`}
+        className={`overflow-hidden transition-all ${isCollapsed ? " ml-4" : "w-0"
+          }`}
       >
         {text}
       </span>
-        {alert && (
-          <div
-            className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${
-              isCollapsed ? "" : "top-2"
+      {alert && (
+        <div
+          className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${isCollapsed ? "" : "top-2"
             }`}
-          />
-        )}
+        />
+      )}
 
       {!isCollapsed && (
         <div

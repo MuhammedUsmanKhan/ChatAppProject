@@ -12,6 +12,7 @@ export const register = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Failed to register user' });
   }
+  
 };
 
 export const login = async (req, res) => {
@@ -23,15 +24,37 @@ export const login = async (req, res) => {
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password);
       if (isMatch) {
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+        const token = jwt.sign({
+          id: user.id,
+          username: user.username,
+          email: req.body.email
+        }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.cookie('token', token, {
+          httpOnly: true,
+          secure: true // Set to true in production
+        });
+        console.log(token)
+        res.send({
+          message: 'Logged in successfully',
+          data: {
+            username: user.username,
+            email: req.body.email
+          }
+        });
+
+        return
+
       } else {
         res.status(400).json({ error: 'Invalid credentials' });
+        return
       }
     } else {
       res.status(400).json({ error: 'Invalid credentials' });
+      return
     }
   } catch (error) {
     res.status(500).json({ error: 'Failed to login user' });
   }
 };
+
