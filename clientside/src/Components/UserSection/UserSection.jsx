@@ -56,7 +56,7 @@ const UserSection = () => {
                 </form>
                 {
                     User?.map((eachUser, index) => {
-                        return <div key={index}>
+                        return <div key={index} className=''>
                             <Link to={`/userchat/${eachUser.id}`}>
                                 <h2>{eachUser.username}</h2>
                                 <div className='flex flex-col'>

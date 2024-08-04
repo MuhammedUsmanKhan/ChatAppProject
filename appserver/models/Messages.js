@@ -22,7 +22,7 @@ const Message = sequelize.define('Message', {
   text: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true, // Maintain the existing unique constraint on email
+    // unique: true, // Maintain the existing unique constraint on email
   },
   imageUrl: {
     type: DataTypes.STRING,

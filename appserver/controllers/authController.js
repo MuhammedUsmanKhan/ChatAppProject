@@ -12,7 +12,7 @@ export const register = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Failed to register user' });
   }
-  
+
 };
 
 export const login = async (req, res) => {
@@ -58,3 +58,13 @@ export const login = async (req, res) => {
   }
 };
 
+export const logout =  (req, res) => {
+
+  res.clearCookie('token', {
+    httpOnly: true,
+    // sameSite: 'none',
+    secure: true
+  })
+  res.send({ message: "Logout successful" });
+
+}

@@ -3,6 +3,7 @@ import { useContext, createContext, useState } from "react"
 import Dashboard from '../../views/Dashboard';
 import { useDispatch, useSelector } from "react-redux";
 import { collapseSidebar } from "../../store/slices/SidebarSlice";
+
 // const SiblingContext = createContext();
 
 // const SidebarContext = createContext()
@@ -12,6 +13,11 @@ export default function Sidebar({ children }) {
 
   const dispatch = useDispatch();
 
+  const { user } = useSelector((state) => state.userprofile )
+  // const { darkTheme, user, isLogin, baseUrl, baseUrlSocketIo } = useSelector((state) =>  state.userprofile )
+
+  console.log(user)
+
   const isCollapsed = useSelector((state) => state.sidebar.isCollapsed);
 
   console.log(isCollapsed)
@@ -19,7 +25,7 @@ export default function Sidebar({ children }) {
   if (isCollapsed == null) {
 
     return null
-    
+
   }
 
   return (
@@ -62,8 +68,8 @@ export default function Sidebar({ children }) {
           `}
           >
             <div className="leading-4">
-              <h4 className="font-semibold">John Doe</h4>
-              <span className="text-xs text-gray-600">johndoe@gmail.com</span>
+              <h4 className="font-semibold">{user.payload?.username}</h4>
+              <span className="text-xs text-gray-600">{user.payload?.email}</span>
             </div>
             <MoreVertical size={20} />
           </div>
@@ -73,12 +79,14 @@ export default function Sidebar({ children }) {
   )
 }
 
-export function SidebarItem({ icon, text, active, alert }) {
+export function SidebarItem({ icon, text, active, alert, onClick }) {
   // const { expanded } = useContext(SidebarContext)
   const isCollapsed = useSelector((state) => state.sidebar.isCollapsed);
 
+
   return (
     <li
+      onClick={onClick}
       className={`
         relative flex items-center h-12  px-3 my-2
         font-medium rounded-md cursor-pointer

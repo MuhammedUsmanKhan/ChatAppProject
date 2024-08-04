@@ -13,8 +13,8 @@ const MessageSection = () => {
 
     return (
         <>
-            <div className='flex justify-center items-center border border-t-0 border-b-0 border-r-[#1f2124] border-l-0 w-2/3'>
-                <div className='flex flex-col space-y-8 w-72'>
+            <div className='flex justify-center h-screen items-center border border-t-0 border-b-0 border-r-[#1f2124] border-l-0 w-2/3'>
+                <div className='flex flex-col space-y-8 h-full w-full'>
                     {/* <div className=''>
                         <div className='text-3xl font-bold'>Select a message</div>
                         <div className='text-sm'>

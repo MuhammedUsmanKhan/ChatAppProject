@@ -2,6 +2,7 @@ import express, { text } from 'express';
 import cors from 'cors';
 import config from './config/config.js';
 import sequelize from './config/database.js';
+import { Op } from 'sequelize';
 import authRoutes from './routes/auth.js';
 import cookieParser from 'cookie-parser';
 import User from './models/User.js';
@@ -85,6 +86,61 @@ app.get('/api/v1/users', async (req, res) => {
   }
 });
 
+app.get('/api/v1/profile', async (req, res) => {
+  try {
+
+    const fetchProfile = await User.findOne({
+      where: {
+        id: req.user.id
+      }
+    })
+
+    console.log(fetchProfile)
+    
+    const { username, email , createdAt } = fetchProfile
+    
+const modifiedUserProfile ={
+  username,
+  email,
+  createdAt
+}
+
+    res.send(modifiedUserProfile)
+
+    
+  } catch (error) {
+
+    console.log(error)
+    res.send('Cannot get profile', error)
+
+  }
+
+
+})
+
+
+app.get('/api/v1/profile/:id', async (req, res) => {
+  try {
+
+    const fetchProfile = await User.findOne({
+      where: {
+        id: req.params.id
+      }
+    })
+
+    console.log(fetchProfile)
+    res.send(fetchProfile)
+
+  } catch (error) {
+
+    console.log(error)
+    res.send('Cannot get profile', error)
+
+  }
+
+
+})
+
 
 app.post('/api/v1/message', async (req, res) => {
 
@@ -113,11 +169,25 @@ app.get('/api/v1/message/:id', async (req, res) => {
   // } catch (error) {
 
   // }
+  const { sortDirection } = req.query;
+
+  const sortOrder = sortDirection === 'desc' ? 'DESC' : 'ASC'; // Default sort direction
+
+
   const messages = await Message.findAll({
     where: {
-      fromUserId: req.user.id,
-      toUserId: req.params.id,
+      [Op.or]: [
+        {
+          fromUserId: req.user.id,
+          toUserId: req.params.id,
+        },
+        {
+          fromUserId: req.params.id,
+          toUserId: req.user.id,
+        }
+      ],
     },
+    order: [['createdAt', sortOrder]],
     limit: 100,
     include: [
       { model: User, as: 'fromUser', attributes: ['username'] },

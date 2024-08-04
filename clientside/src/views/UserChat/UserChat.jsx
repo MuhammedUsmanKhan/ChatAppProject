@@ -8,7 +8,7 @@ const UserChat = () => {
     const isCollapsed = useSelector((state) => state.sidebar.isCollapsed);
 
     return (
-        <div className={` text-white h-full bg-black ${isCollapsed ? "sm:ml-[15.3rem]" : "ml-[4.3rem]"}`}>
+        <div className={` text-white h-screen overflow-y-hidden bg-black ${isCollapsed ? "sm:ml-[15.3rem]" : "ml-[4.3rem]"}`}>
             <div className='flex   h-full '>
                 <UserSection />
                 <MessageSection />
